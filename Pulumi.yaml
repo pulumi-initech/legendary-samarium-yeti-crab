@@ -1,0 +1,39 @@
+name: legendary-samarium-yeti-crab
+description: An RPS based full-featured web server
+runtime: yaml
+resources:
+  cert:
+    type: acm:index:DnsValidatedCertificate
+    properties:
+      domainName: ${subDomain}.${hostedZoneName}
+      zoneId:
+        fn::invoke:
+          function: aws:route53:getZone
+          arguments:
+            name: ${hostedZoneName}
+          return: zoneId
+  web:
+    type: web:index:WebEnvironment
+    properties:
+      vpcId: ${VpcId}
+      vpcCidr: ${CidrBlock}
+      publicSubnetIds: ${PublicSubnetIds}
+      privateSubnetIds: ${PrivateSubnetIds}
+      imageId: ${imageId}
+      instanceType: ${instanceType}
+      instanceCount: ${instanceCount}
+      subdomain: ${subDomain}
+      zoneId:
+        fn::invoke:
+          function: aws:route53:getZone
+          arguments:
+            name: ${hostedZoneName}
+          return: zoneId
+      certificateArn: ${cert.certificateArn}
+outputs:
+  certificateArn:
+    value: ${cert.certificateArn}
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: https://github.com/pulumi-initech/templates/templates/aws-rpsweb-yaml

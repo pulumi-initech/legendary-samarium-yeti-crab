@@ -1,0 +1,6 @@
+config:
+  legendary-samarium-yeti-crab:instanceCount: "2"
+  legendary-samarium-yeti-crab:instanceType: m3.medium
+  pulumi:template: https://github.com/pulumi-initech/templates/templates/aws-rpsweb-yaml
+environment:
+  - demo/aws-rpsweb-base-dev
