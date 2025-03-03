@@ -23,6 +23,8 @@ resources:
       instanceType: ${instanceType}
       instanceCount: ${instanceCount}
       subdomain: ${subDomain}
+      scaleInRpsThreshold: ${scaleInRpsThreshold}
+      scaleOutRpsThreshold: ${scaleOutRpsThreshold}
       zoneId:
         fn::invoke:
           function: aws:route53:getZone
@@ -31,9 +33,13 @@ resources:
           return: zoneId
       certificateArn: ${cert.certificateArn}
 outputs:
-  certificateArn:
-    value: ${cert.certificateArn}
+  frontendUrl:
+    value: https://${web.fqdn}
 config:
+  scaleInRpsThreshold: 
+    default: 500
+  scaleOutRpsThreshold:
+    default: 1000
   pulumi:tags:
     value:
       pulumi:template: https://github.com/pulumi-initech/templates/templates/aws-rpsweb-yaml
