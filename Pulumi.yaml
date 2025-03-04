@@ -6,12 +6,7 @@ resources:
     type: acm:index:DnsValidatedCertificate
     properties:
       domainName: ${subDomain}.${hostedZoneName}
-      zoneId:
-        fn::invoke:
-          function: aws:route53:getZone
-          arguments:
-            name: ${hostedZoneName}
-          return: zoneId
+      zoneName: ${hostedZoneName}
   web:
     type: web:index:WebEnvironment
     properties:
@@ -25,12 +20,7 @@ resources:
       subdomain: ${subDomain}
       scaleInRpsThreshold: ${scaleInRpsThreshold}
       scaleOutRpsThreshold: ${scaleOutRpsThreshold}
-      zoneId:
-        fn::invoke:
-          function: aws:route53:getZone
-          arguments:
-            name: ${hostedZoneName}
-          return: zoneId
+      zoneName: ${hostedZoneName}
       certificateArn: ${cert.certificateArn}
 outputs:
   frontendUrl:
